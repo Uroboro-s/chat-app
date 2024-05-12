@@ -1,0 +1,59 @@
+.app {
+  margin: 0;
+  text-align: center;
+}
+
+.screen {
+  display: flex;
+}
+
+.title {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  color: white;
+  background-color: black;
+}
+.list {
+  width: 30%;
+}
+.container {
+  background-color: grey;
+  border: 2px solid black;
+  height: 600px;
+  width: 60%;
+}
+
+.window {
+  height: 500px;
+  /* background-color: white; */
+}
+.control {
+  /* background-color: ; */
+  height: 100px;
+  /* display: flex; */
+}
+.message-input-container {
+  width: 100%;
+  /* background-color: aliceblue; */
+}
+form {
+  display: flex;
+  width: 100%;
+}
+
+input {
+  width: 90%;
+  height: 60px;
+  margin: 5px;
+  border-radius: 2%;
+  font-size: larger;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.right-align {
+  text-align: right;
+}
