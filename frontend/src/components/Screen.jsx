@@ -1,42 +1,88 @@
-import { useLoaderData, useParams } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import MessageWindow from "./MessageWindow";
 import List from "./List";
 import { fetchRoomList } from "./apiFunctions";
-import { useEffect, useState } from "react";
 import { socket } from "../socket";
 
 function Screen() {
   const { userid } = useParams();
   const [activeRoom, setActiveRoom] = useState("");
   const [roomList, setRoomList] = useState([]);
-  // const [activeMessages, setActiveMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // const { data } = useLoaderData();
-  console.log(userid);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userid) {
+        setError("User ID is required");
+        setLoading(false);
+        return;
+      }
 
-  useEffect(
-    function () {
-      const fetchData = async () => {
-        const res = await fetchRoomList(userid); //rooms list
-        setRoomList(res);
-      };
+      try {
+        setLoading(true);
+        const rooms = await fetchRoomList(userid);
+        setRoomList(rooms || []);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching rooms:", err);
+        setError("Failed to load rooms");
+        setRoomList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchData();
-    },
-    [userid]
-  );
+    fetchData();
+  }, [userid]);
 
   return (
     <div style={{ width: "100vw", height: "100vh" }} className="app">
-      <div className="title">Messenger</div>
+      <div className="title">
+        Messenger
+        {userid && (
+          <span style={{
+            fontSize: "0.9rem",
+            fontWeight: "400",
+            marginLeft: "1rem",
+            color: "var(--text-secondary)"
+          }}>
+            @{userid}
+          </span>
+        )}
+      </div>
+
+      {error && (
+        <div className="error-message" style={{ margin: "1rem" }}>
+          {error}
+        </div>
+      )}
+
       <div className="screen">
-        <List list={roomList} setRoom={setActiveRoom} />
-        <MessageWindow
-          socket={socket}
-          roomID={activeRoom}
-          activeUser={userid}
-        />
+        {loading ? (
+          <div style={{
+            textAlign: "center",
+            color: "var(--text-secondary)",
+            width: "100%",
+            marginTop: "2rem"
+          }}>
+            Loading rooms...
+          </div>
+        ) : (
+          <>
+            <List
+              list={roomList}
+              setRoom={setActiveRoom}
+              currentRoom={activeRoom}
+            />
+            <MessageWindow
+              socket={socket}
+              roomID={activeRoom}
+              activeUser={userid}
+            />
+          </>
+        )}
       </div>
     </div>
   );
