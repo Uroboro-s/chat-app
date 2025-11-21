@@ -1,9 +1,6 @@
 const express = require("express");
-
 const router = express.Router();
-
-const User = require("./user.model");
-const Message = require("./message.model");
+const { User, Message } = require("../models");
 
 // Health check endpoint
 router.get("/", (req, res) => {

@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { socket } from "./socket";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
-import "./App.css";
-import AppLayout from "./components/AppLayout";
-import Screen from "./components/Screen";
-import PageNotFound from "./components/PageNotFound";
-import Login from "./components/Login";
+import "./styles/App.css";
+import { socket } from "./services";
+import { AppLayout } from "./components";
+import { Login, ChatPage, PageNotFound } from "./pages";
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -39,7 +37,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/app" element={<AppLayout />}>
-          <Route path="list/:userid" element={<Screen />} />
+          <Route path="list/:userid" element={<ChatPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from "react";
-import { addMessage, fetchMessages } from "./apiFunctions";
+import { addMessage, fetchMessages } from "../../services";
 
 function MessageWindow({ socket, roomID, activeUser }) {
   const [value, setValue] = useState("");

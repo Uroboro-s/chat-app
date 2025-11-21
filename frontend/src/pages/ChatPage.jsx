@@ -1,11 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import MessageWindow from "./MessageWindow";
-import List from "./List";
-import { fetchRoomList } from "./apiFunctions";
-import { socket } from "../socket";
+import { RoomList, MessageWindow } from "../components/chat";
+import { fetchRoomList, socket } from "../services";
 
-function Screen() {
+function ChatPage() {
   const { userid } = useParams();
   const [activeRoom, setActiveRoom] = useState("");
   const [roomList, setRoomList] = useState([]);
@@ -71,7 +69,7 @@ function Screen() {
           </div>
         ) : (
           <>
-            <List
+            <RoomList
               list={roomList}
               setRoom={setActiveRoom}
               currentRoom={activeRoom}
@@ -88,4 +86,4 @@ function Screen() {
   );
 }
 
-export default Screen;
+export default ChatPage;
